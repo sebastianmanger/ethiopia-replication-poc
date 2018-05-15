@@ -10,7 +10,7 @@ psql -U postgres -d test -c "SELECT pglogical.create_node(
 # Create a dummy table.
 psql -U postgres -d test -c "DROP TABLE IF EXISTS slm"
 psql -U postgres -d test -c "CREATE TABLE slm (
-    uuid    integer primary key,
+    uuid    uuid primary key,
     public  bool DEFAULT true,
     name    varchar(40),
     region_specific varchar(10) DEFAULT 'test'

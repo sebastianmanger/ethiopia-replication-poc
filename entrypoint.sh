@@ -11,6 +11,7 @@ psql -U postgres -c "CREATE DATABASE test;"
 psql -U postgres -d test -c "CREATE EXTENSION IF NOT EXISTS pglogical;"
 psql -U postgres -d test -c "DROP ROLE IF EXISTS replication;"
 psql -U postgres -d test -c "CREATE ROLE replication WITH SUPERUSER REPLICATION LOGIN ENCRYPTED PASSWORD '1234';"
+psql -U postgres -d test -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
 
 # Setup this node
 ./tmp/setup.sh

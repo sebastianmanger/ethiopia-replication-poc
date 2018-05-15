@@ -10,14 +10,14 @@ psql -U postgres -d test -c "SELECT pglogical.create_node(
 # Create a dummy table
 psql -U postgres -d test -c "DROP TABLE IF EXISTS slm"
 psql -U postgres -d test -c "CREATE TABLE slm (
-    uuid    integer primary key,
+    uuid    uuid primary key DEFAULT uuid_generate_v4(),
     public  bool,
     name    varchar(40)
 );"
 # This is the data that is 'replicated' to all nodes that have a subscription to this node.
-psql -U postgres -d test -c "INSERT INTO slm values (3, true, 'district two: first public entry');"
-psql -U postgres -d test -c "INSERT INTO slm values (4, false, 'district two: first non-public entry');"
-psql -U postgres -d test -c "INSERT INTO slm values (5, true, 'district two: second public entry');"
+psql -U postgres -d test -c "INSERT INTO slm values (uuid_generate_v4(), true, 'district two: first public entry');"
+psql -U postgres -d test -c "INSERT INTO slm values (uuid_generate_v4(), false, 'district two: first non-public entry');"
+psql -U postgres -d test -c "INSERT INTO slm values (uuid_generate_v4(), true, 'district two: second public entry');"
 
 # Provide data for 'subscribers' (in this case: region_one)
 psql -U postgres -d test -c "select pglogical.create_replication_set('replicate_db_test');"
