@@ -20,3 +20,11 @@ psql -U postgres -d test -c "SELECT pglogical.create_subscription(
     replication_sets := array['replication_set'],
     provider_dsn := 'host=district_one port=5432 dbname=test user=replication'
 );"
+
+# Subscribe to the node 'district_two'
+psql -U postgres -d test -c "SELECT pglogical.drop_subscription('district_two_test', true);"
+psql -U postgres -d test -c "SELECT pglogical.create_subscription(
+    subscription_name := 'district_two_test',
+    replication_sets := array['replication_set'],
+    provider_dsn := 'host=district_two port=5432 dbname=test user=replication'
+);"
