@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  district_one:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        identifier: district_one
+    expose:
+    - "5432"
+    entrypoint: ["entrypoint.sh"]
+    # keep container running
+    command: ["tail", "-f", "/dev/null"]
+
+  region_one:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        identifier: region_one
+    expose:
+    - "5432"
+    entrypoint: ["entrypoint.sh"]
+    # keep container running
+    command: ["tail", "-f", "/dev/null"]
+    depends_on:
+      - district_one
