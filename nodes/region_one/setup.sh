@@ -11,8 +11,9 @@ psql -U postgres -d test -c "SELECT pglogical.create_node(
 psql -U postgres -d test -c "DROP TABLE IF EXISTS slm"
 psql -U postgres -d test -c "CREATE TABLE slm (
     uuid    integer primary key,
-    public  bool,
-    name    varchar(40)
+    public  bool DEFAULT true,
+    name    varchar(40),
+    region_specific varchar(10) DEFAULT 'test'
 );"
 
 # Subscribe to the node 'district_one'

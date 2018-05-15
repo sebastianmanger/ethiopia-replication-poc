@@ -25,5 +25,6 @@ psql -U postgres -d test -c "select pglogical.replication_set_add_table(
   set_name := 'replicate_db_test',
   relation := 'slm',
   synchronize_data := true,
-  row_filter := 'public = true'
+  row_filter := 'public = true',
+  columns := array['uuid', 'name']
 );"
