@@ -2,14 +2,13 @@
 
 This is a proof of concept for data replication on database level between various levels (district, region, nation).
 By using the postgresql extension pglogical, no additional (new) systems such as elasticsearch are required.
-This guide requires knowledge for system administration and specifically database administration. In case of doubt, 
-please contact Matthias.
+This guide requires knowledge for system administration and specifically database administration. 
 
 ## Goals
 
 * Synchronize data asynchronously, flaky connectivity is expected.
 * Technically robust solution, keeping additional complexity low.
-* Low bandwith usage, synchronize only updates ('difference') of approved data.
+* Low bandwidth usage, synchronize only updates ('difference') of approved data.
 
 ## Limitations 
 
@@ -26,7 +25,7 @@ please contact Matthias.
 * If a datacentre remains offline for a long time, the hard disk will run out of space.
   
   * Local updates are kept as 'write ahead logs', and cleaned only after completed synchronization.
-  * See: requirements --> monitoring.
+  * See: Requirements --> monitoring.
 
 ## Requirements
 
@@ -35,13 +34,13 @@ please contact Matthias.
     * UUID as primary keys for all tables that are synchronized. This is required, so the same ID is not used in 
     multiple districts. See https://www.postgresql.org/docs/current/static/uuid-ossp.html and 
     https://docs.zendframework.com/zend-validator/validators/uuid/
-    * Change the type of PK is the only change required at application (PHP) level
+    * This change (ID as UUID) is the only change required at application (PHP) level
 
 * Monitoring: following data must be closely monitored:
 
     * Online status of all applications (web server and database server)
-    * Synchronization status
-    * Free space on hard drive, size of 'synchronize' logs
+    * Replication status
+    * Free space on hard drive, size of '[WAL](https://www.postgresql.org/docs/10/static/wal-intro.html)' files
     * Monitoring should be up and running from the start, as a learning curve is to be expected
     * CDE can provide insight about monitoring.
 
@@ -51,7 +50,7 @@ Use pglogical (https://www.2ndquadrant.com/en/resources/pglogical/pglogical-docs
 
 * Reason:
 
-    * Well maintained, easy installation and use as postgresql extension.
+    * Well maintained, easy installation and usage as postgresql extension.
     * Synchronize data from 'write ahead log' - so only the updates to the database, not a 'full' replication.
     * Works well with bad connectivity.
     * Row filtering is possible, so only 'approved' data may be synced.
@@ -80,4 +79,4 @@ Use pglogical (https://www.2ndquadrant.com/en/resources/pglogical/pglogical-docs
 
 For those interested: install Docker (https://docker.com) and run```docker-compose up```
 
-See poc.md for detailed information.
+See [poc.md](poc.md)for detailed information.
