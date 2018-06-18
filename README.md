@@ -80,3 +80,15 @@ Use pglogical (https://www.2ndquadrant.com/en/resources/pglogical/pglogical-docs
 For those interested: install Docker (https://docker.com) and run```docker-compose up```
 
 See [poc.md](poc.md)for detailed information.
+
+
+## Disbling orphans
+
+pglogical does not guarantee the order of replication, so children may be replicated before its parents (see pglogical 
+docs, item 4.8 FOREIGN KEYS). To avoid application errors, following procedure is recommended:
+
+* A new column is introduced: ```is_active```. The application should only display values where this is ```true```.
+* A trigger checks the availability foreign key, an sets ```is_active``` to ```false``` if unsuccessful. See the trigger
+in the setup of region one (```nodes/region_one/setup.sh, line 36```).
+* A cronjob is created: check all foreign keys where ```is_active``` is ```false``` and enable it if the parent is now 
+available. This cronjob is not in the repository, but should be straightforward to develop.
